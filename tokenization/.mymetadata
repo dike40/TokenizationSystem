@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="tokenization"
+  id="myeclipse.1428894305337"
+  context-root="/tokenization"
+  j2ee-spec="5.0"
+  archive="tokenization.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+
