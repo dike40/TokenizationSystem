@@ -35,14 +35,57 @@ public class TokenSystemEngine implements Engine {
 		
 		if(jo.get("type").equals(Configuration.msgFromRegistry)){
 			String[] temp = {(String)jo.get("domain"), 
-			(String)jo.get("mode"),  
-			(String)jo.get("merchantId"),
-			(String)jo.get("param1"),
-			(String)jo.get("param2")
+			(String)jo.getString("mode"),  
+			(String)jo.getString("merchantId"),
+			(String)jo.getString("param1"),
+			(String)jo.getString("param2")
 			};
 			param = temp;
 		}
-		
+		else if (jo.get("type").equals(Configuration.msgFromTokenization)) {
+			
+			String[] temp = {(String)jo.getString("tokReqId"), 
+					(String)jo.getString("panLen"),  
+					(String)jo.getString("pan"),
+					(String)jo.getString("panExpDate"),
+					(String)jo.getString("tokenLen"),
+					(String)jo.getString("token"),
+					(String)jo.getString("reqTokAssuLevel"),
+					(String)jo.getString("tokenLoc"),
+					(String)jo.getString("protocol"),
+					(String)jo.getString("accotVerReslt"),
+					(String)jo.getString("accotVerRefLen"),
+					(String)jo.getString("accotVerRef"),
+					(String)jo.getString("tokReqRiskSco"),
+					(String)jo.getString("addrMisIndic"),
+					(String)jo.getString("cardhldDataLen"),
+					(String)jo.getString("cardhldData"),
+					(String)jo.getString("devInfoLen"),
+					(String)jo.getString("devInfo"),
+					(String)jo.getString("tokDomRestrtContrl"),
+					(String)jo.getString("posEntryMode"),
+					(String)jo.getString("merchId"),
+					(String)jo.getString("isUpdate")
+					
+					};
+					param = temp;
+			
+			
+		}
+		else if (jo.get("type").equals(Configuration.msgFromDeTokenization)){
+			String[] temp ={
+					(String)jo.getString("tokenStr"),
+					(String)jo.getString("trId"),
+					(String)jo.getString("tokenExpDate"),
+					(String)jo.getString("devInfo"),
+					(String)jo.getString("cardhldId"),
+					(String)jo.getString("tokCrypto"),
+					(String)jo.getString("posEntryMode")
+					
+					
+			};
+			param = temp;
+		}
 		
 		
 		return param;	
@@ -56,7 +99,7 @@ public class TokenSystemEngine implements Engine {
 
 	public String[] sendBackMsg(String ...param) {
 		// TODO return message
-		System.out.println("返回报文。。。成功:"+param);
+		System.out.println("返回报文。。。成功:"+param[0]);
 		return param;
 	}
 

@@ -66,7 +66,7 @@ public class TRInfoProcess {
 		
 		Vault vault=Vault.getVault();
 		//×¢²á
-		JSONObject pkg=vault.registerTR(tr);
+		JSONObject pkg=vault.registerTr(tr);
 		int resCode=pkg.getInt("responseCode");
 		//¼ì²âÊÇTRÊÇ·ñ´æÔÚ
 		//int res1=vault.isTrExist(tr);

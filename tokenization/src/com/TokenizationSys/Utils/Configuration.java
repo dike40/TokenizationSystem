@@ -24,5 +24,6 @@ public class Configuration {
 	
 	public static String msgFromRegistry = "registry";
 	public static String msgFromTokenization = "tokenization";
+	public static String msgFromDeTokenization = "detokenization";
 	public static String msgFromLifeCtrl = "lifeCtrl";
 }

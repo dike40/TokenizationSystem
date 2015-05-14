@@ -22,13 +22,13 @@ public class EngineForRegistry extends EngineDecorator{
 		super(TSE);
 	}
 	
-	public String[] process(JSONObject jo) {
+	public String process(JSONObject jo) {
 		
 		connect();
-		getInfo(getMessage(jo));
+		doIDV(getMessage(jo));
 		Register();	
 		
-		String[] result = sendBack();
+		String result = sendBack();
 		
 		return result;
 	}
@@ -49,7 +49,7 @@ public class EngineForRegistry extends EngineDecorator{
 	}
 	
 	
-	private void getInfo(String ...param) {
+	private void doIDV(String ...param) {
 		
 		String[] result = super.DeInfo(param);//暂时未用到
 		//封装注册消息报文		
@@ -77,25 +77,24 @@ public class EngineForRegistry extends EngineDecorator{
 		vaultReturnCode = Configuration.vaultReturnCode.sucess.getResult();
 	}
 	
-	private String[] sendBack() {
-		String[] result = null;
+	private String sendBack() {
+		JSONObject jo = new JSONObject();
 		if (vaultReturnCode == Configuration.vaultReturnCode.sucess.getResult()) {
 			//TODO return TR_ID and success;
-			String[] temp = {vaultReturnCode,TR_ID};
-			result = temp;
 			
-			super.sendBackMsg(result);
+			jo.put("vaultReturnCode", vaultReturnCode);
+			jo.put("TR_ID", TR_ID);
+			super.sendBackMsg(jo.toString());
 			
 		} else if(vaultReturnCode == Configuration.vaultReturnCode.fault.getResult()){
 			//TODO return fault and reason;
 			
-			String[] temp = {vaultReturnCode,TR_ID};
-			result = temp;
-			
-			super.sendBackMsg(result);
+			jo.put("vaultReturnCode", vaultReturnCode);
+			jo.put("TR_ID", TR_ID);
+			super.sendBackMsg(jo.toString());
 		}
 		
-		return result;
+		return jo.toString();
 	}
 	
 	

@@ -45,6 +45,7 @@ String ID = (String)request.getAttribute("TR_ID");
    merchantId:<input type="text" name="merchantId" id="merchantId" style="width:138px" /><br/>
    param 1:<input type="text" name="param1" id="param1" style="width:138px" /><br/>
    param 2:<input type="text" name="param2" id="param2" style="width:138px" /><br/>
+   reqType:<input type="text" name="reqType" id="reqType" style="width:138px" /><br/>
    
    <input type="button" value="提交" onclick="this.form.submit()">get your TR ID!
     </form>
