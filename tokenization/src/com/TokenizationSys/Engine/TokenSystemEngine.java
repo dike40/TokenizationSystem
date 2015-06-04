@@ -28,10 +28,12 @@ public class TokenSystemEngine implements Engine {
 		return param;
 	}
 	
-	public String[] getMsg(JSONObject jo) {
+	public String[] getMsg(JSONObject jo) throws Exception {
 		// TODO get message
 		System.out.println("获取报文中。。。成功:"+jo.toString());
 		String[] param = null ;
+	try {
+		
 		
 		if(jo.get("type").equals(Configuration.msgFromRegistry)){
 			String[] temp = {(String)jo.get("domain"), 
@@ -86,7 +88,24 @@ public class TokenSystemEngine implements Engine {
 			};
 			param = temp;
 		}
+		else if (jo.get("type").equals(Configuration.msgFromLifeCtrl)){
+			String[] temp ={
+					(String)jo.getString("token"),
+					(String)jo.getString("trId"),
+					(String)jo.getString("tokenManageType"),
+					(String)jo.getString("newTokenExpDate")
+					
 		
+			};
+			param = temp;
+		}
+		
+	} catch (Exception e) {
+		// TODO: handle exception
+		System.out.println("Get Message Error:"+e.getMessage());
+		
+		throw new Exception("Get Message Error:"+e.getMessage());
+	}
 		
 		return param;	
 	}

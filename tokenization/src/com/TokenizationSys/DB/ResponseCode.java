@@ -1,5 +1,4 @@
 package com.TokenizationSys.DB;
-
 public class ResponseCode {
 	public static int SUCCESS=0;
 	public static int UNKNOWN_ERROR=3;
@@ -54,7 +53,13 @@ public class ResponseCode {
 	public static final int TOKEN_EXPIRY_TIME_UNMATCH=40;
 	public static final int TOKEN_EXPIRY_TIME_MATCH=41;
 	
+	public static final int TOKEN_EXPIRY_UPDATE_SUCCESS=42;
+	public static final int TOKEN_EXPIRY_UPDATE_FAILURE=43;
 	
+	public static final int TOKEN_STATUS_UPDATE_SUCCESS=44;
+	public static final int TOKEN_STATUS_UPDATE_FAILURE=45;
+	public static final int TOKEN_UNLINK_SUCCESS=46;
+	public static final int TOKEN_UNLINK_FAILURE=47;
 	
 	
 }

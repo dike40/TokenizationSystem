@@ -14,17 +14,16 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-
 import net.sf.json.JSONObject;
 /**
  * Vault
  *@author YAO SHUI HE
  */
+@SuppressWarnings("deprecation")
+
 public class Vault {
 	private static Vault vault=null;
 	
-	@SuppressWarnings("deprecation")
 	private HttpClient client=new DefaultHttpClient();
 	private HttpPost post=new HttpPost();
 
@@ -42,6 +41,86 @@ public class Vault {
 			vault=new Vault();
 		}
 		return vault;
+	}
+	/**
+	 *以token,trId为索引。获取token的状态
+	 *@param mappingData 包含映射信息的JSON对象，至少包含token,trId
+	 *@return 返回码:
+	 *<br>UNKNOW_ERROR: 获取出错
+	 *<br>SUCCESS:获取成功
+	 *<br>返回值：
+	 *<br>返回值为JSON对象，其中包含了token的状态:SUSPEND/ACTIVATE
+	 *<br>JSONObject res=vault.getTokenStatus(mappingData);
+	 *<br>int code=res.getInt("responseCode");
+	 *<br>JSONObject statusObj=res.getJSONObject("responseContent");
+	 *<br>String tokenStatus=statusObj.getString("tokenStatus");
+	 */
+	public JSONObject getTokenStatus(JSONObject mappingData){
+		JSONObject pkg=null;
+		String data=mappingData.toString();
+		String res=executeCmd(TOKEN.GET_TOKEN_STATUS,data);
+
+		if(res!=null){
+			pkg=JSONObject.fromObject(res);
+		}
+		return pkg;
+	}
+	/**
+	 *以token，trId为索引，接触token和pan的绑定，即删除该条映射信息
+	 *@param mappingData 包含 映射信息的JSON对象，至少包含token,trId
+	 *@return 返回码:
+	 *<br>TOKEN_UNLINK_SUCCESS 绑定解除成功
+	 *<br>TOKEN_UNLINK_FAILURE 绑定解除失败
+	 *<br>返回值:
+	 *<br>null
+	 */
+	public JSONObject unlinkToken(JSONObject mappingData){
+		JSONObject pkg=null;
+		String data=mappingData.toString();
+		String res=executeCmd(TOKEN.UNLINK_TOKEN,data);
+
+		if(res!=null){
+			pkg=JSONObject.fromObject(res);
+		}
+		return pkg;
+	}
+	/**
+	 *以token,trId为索引，更新token的状态(SUSPEND/ACTIVATE)
+	 *@param mappingData,包含映射信息的JSON对象，至少包含token,trId,新的token状态
+	 *@return 返回码:
+	 *<br>TOKEN_STATUS_UPDATE_SUCCESS token状态更新成功
+	 *<br>TOKEN_STATUS_UPDATE_FAILURE token状态更新失败
+	 *<br>返回值:
+	 *<br>null 
+	 */
+	public JSONObject updateTokenStatus(JSONObject mappingData){
+		JSONObject pkg=null;
+		String data=mappingData.toString();
+		String res=executeCmd(TOKEN.UPDATE_TOKEN_STATE,data);
+
+		if(res!=null){
+			pkg=JSONObject.fromObject(res);
+		}
+		return pkg;
+	}
+	/**
+	 *以token,trId为索引，更新token的有效期
+	 *@param mappingData,包含映射信息的JSON对象，至少包含token,trId,新的token有效时间
+	 *@return 返回码:
+	 *<br>TOKEN_EXPIRY_UPDATE_SUCCESS token有效期更新成功
+	 *<br>TOKEN_EXPIRY_UPDATE_FAILURE token有效期更新失败
+	 *<br>返回值:
+	 *<br>null 
+	 */
+	public JSONObject updateTokenExpiryTime(JSONObject mappingData){
+		JSONObject pkg=null;
+		String data=mappingData.toString();
+		String res=executeCmd(TOKEN.UPDATE_TOKEN_EXPIRY_TIME,data);
+
+		if(res!=null){
+			pkg=JSONObject.fromObject(res);
+		}
+		return pkg;
 	}
 	/**
 	 *以token,trId为索引，获取pan,panExpiryTime
@@ -439,6 +518,7 @@ public class Vault {
 	 *<br>返回值:
 	 *<br>null
 	 */
+	@SuppressWarnings("unused")
 	private JSONObject checkCardholderInfo(JSONObject cardholderData){
 		JSONObject pkg=null;
 		String data=cardholderData.toString();

@@ -24,7 +24,7 @@ public class EngineDecorator implements Engine{
 
 
 
-	public String[] getMsg(JSONObject jo) {
+	public String[] getMsg(JSONObject jo) throws Exception {
 		return TSE.getMsg(jo);
 	}
 

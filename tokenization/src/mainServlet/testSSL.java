@@ -11,6 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 public class testSSL extends HttpServlet {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1542646426L;
+
+	/**
 	 * Constructor of the object.
 	 */
 	public testSSL() {

@@ -387,7 +387,7 @@ public class Id_V {
 			insert.put("cardholderShipAddr", chd.shipAddr);
 			insert.put("cardholderPostCode", chd.postCode);
 			insert.put("accountAge", chd.accotAge);
-			insert.put("extra1", "extra2");
+			insert.put("tokenStatus", "SUSPEND");
 			insert.put("extra2", "extra2");
 			js = insert.build();
 			System.out.println(insert.toString());
@@ -434,7 +434,7 @@ public class Id_V {
 			insert.put("cardholderShipAddr", chd.shipAddr);
 			insert.put("cardholderPostCode", chd.postCode);
 			insert.put("accountAge", chd.accotAge);
-			insert.put("extra1", "extra2");
+			insert.put("tokenStatus", "SUSPEND");
 			insert.put("extra2", "extra2");
 			js = insert.build();
 			pkg = vault.insertMapping(js);

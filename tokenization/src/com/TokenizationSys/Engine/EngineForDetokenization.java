@@ -1,7 +1,5 @@
 package com.TokenizationSys.Engine;
 
-import org.apache.commons.codec.binary.Base64;
-
 import com.TokenizationSys.DeTokenization.DeTokenProc;
 import com.TokenizationSys.DeTokenization.MsgOfDeTokReslt;
 import com.TokenizationSys.Utils.hexAndString;
@@ -10,7 +8,6 @@ import net.sf.json.JSONObject;
 
 public class EngineForDetokenization extends EngineDecorator{
 	
-	private  byte[] keyBytes = null;
 	private MsgOfDeTokReslt mod;
 
 	public EngineForDetokenization(TokenSystemEngine TSE) {
@@ -22,7 +19,12 @@ public class EngineForDetokenization extends EngineDecorator{
 		
 		connect();
 		
-		doDeToken(getMessage(jo));
+		try {
+			doDeToken(getMessage(jo));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			return e.getMessage();
+		}
 		
 		String result = sendBack();
 		
@@ -39,7 +41,7 @@ public class EngineForDetokenization extends EngineDecorator{
 		return result;	
 	}
 	
-	private String[] getMessage(JSONObject jo) {		
+	private String[] getMessage(JSONObject jo) throws Exception {		
 		
 		return super.getMsg(jo);//通过jsonobject获得数据
 	}

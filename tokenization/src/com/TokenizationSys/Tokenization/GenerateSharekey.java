@@ -10,8 +10,7 @@ public class GenerateSharekey {
 		return gs;
 	}
 	public void generKey() {
-		SecureAlgorithm sa = new SecureAlgorithm();
-		keyBytes = sa.GenKey();
+		keyBytes = SecureAlgorithm.GenKey();
 	}
 	
 	

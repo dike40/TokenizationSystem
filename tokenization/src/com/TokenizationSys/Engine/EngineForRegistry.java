@@ -6,7 +6,6 @@ import com.TokenizationSys.DB.ResponseCode;
 import com.TokenizationSys.Registry.MsgOfTRRegistry;
 import com.TokenizationSys.Registry.TRInfoProcess;
 import com.TokenizationSys.Utils.Configuration;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class EngineForRegistry extends EngineDecorator{
 
@@ -25,9 +24,14 @@ public class EngineForRegistry extends EngineDecorator{
 	public String process(JSONObject jo) {
 		
 		connect();
-		doIDV(getMessage(jo));
-		Register();	
-		
+		try {
+			doIDV(getMessage(jo));		
+			Register();	
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			return e.getMessage();
+		}
 		String result = sendBack();
 		
 		return result;
@@ -43,13 +47,13 @@ public class EngineForRegistry extends EngineDecorator{
 		return result;	
 	}
 	
-	private String[] getMessage(JSONObject jo) {		
+	private String[] getMessage(JSONObject jo) throws Exception {		
 		
 		return super.getMsg(jo);//通过jsonobject获得数据
 	}
 	
 	
-	private void doIDV(String ...param) {
+	private void doIDV(String ...param)throws Exception {
 		
 		String[] result = super.DeInfo(param);//暂时未用到
 		//封装注册消息报文		
@@ -63,12 +67,19 @@ public class EngineForRegistry extends EngineDecorator{
 	
 	
 	
-	private void Register(){
+	private void Register()throws Exception{
 		
 		
 		mTrInfoProcess = new TRInfoProcess(mMsgOfTRRegistry);	
 		
+		try {
+			
 		TR_ID = mTrInfoProcess.generateTRID();
+		} catch (Exception e) {
+			
+			// TODO: handle exception
+			throw new Exception("error from Register:"+e.getMessage());
+		}
 		if (TR_ID.equals(ResponseCode.UNKNOWN_ERROR+"")) {
 			System.out.println("ERROR REGISTION!");
 			vaultReturnCode = Configuration.vaultReturnCode.fault.getResult();

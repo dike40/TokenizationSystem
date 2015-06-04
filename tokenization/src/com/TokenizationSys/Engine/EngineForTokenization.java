@@ -1,7 +1,5 @@
 package com.TokenizationSys.Engine;
 
-import org.apache.commons.codec.binary.Base64;
-
 import com.TokenizationSys.Tokenization.GenerateSharekey;
 import com.TokenizationSys.Tokenization.MsgOfTokReslt;
 import com.TokenizationSys.Tokenization.TokenProc;
@@ -10,6 +8,7 @@ import com.TokenizationSys.Tokenization.IDV.MsgOfIdvReslt;
 import com.TokenizationSys.Tokenization.IDV.MsgOfIdvToIssuer;
 import com.TokenizationSys.Tokenization.IDV.MsgOfIssuerToIdv;
 import com.TokenizationSys.Utils.hexAndString;
+import com.issuer.issuer;
 
 import net.sf.json.JSONObject;
 
@@ -29,8 +28,14 @@ public class EngineForTokenization extends EngineDecorator{
 	public String process(JSONObject jo) {
 		
 		connect();
-		moi =doIDV(getMessage(jo));// jo-type:tokenization
-		mot = doToken(getMessage(jo));
+		try {
+
+			moi =doIDV(getMessage(jo));// jo-type:tokenization
+			mot = doToken(getMessage(jo));
+		} catch (Exception e) {
+		
+			return e.getMessage();
+		}
 		
 		String result = sendBack(moi,mot);
 		
@@ -47,13 +52,13 @@ public class EngineForTokenization extends EngineDecorator{
 		return result;	
 	}
 	
-	private String[] getMessage(JSONObject jo) {		
+	private String[] getMessage(JSONObject jo) throws Exception {		
 		
 		return super.getMsg(jo);//通过jsonobject获得数据
 	}
 	
 	
-	private MsgOfIdvReslt doIDV(String ...param) {
+	private MsgOfIdvReslt doIDV(String ...param) throws Exception{
 		
 		Id_V idv = new Id_V(param[0],
 		                    Integer.parseInt(param[1]),
@@ -79,11 +84,12 @@ public class EngineForTokenization extends EngineDecorator{
 		                    Boolean.getBoolean(param[21])
 		);
 	
-		MsgOfIdvToIssuer idToIs = idv.reqIdv();// TODO issuer
+		MsgOfIdvToIssuer idToIs = idv.reqIdv();
 
-		boolean reqStatus = true;
-		String reasonCode = "";
-		int reasonCodeLen = 0;
+		String[] temp  = issuer.issue(idToIs); // issuer doing in issuer.java
+		boolean reqStatus = Boolean.getBoolean(temp[0]);
+		String reasonCode = temp[1];
+		int reasonCodeLen = reasonCode.length();
 	
 		MsgOfIssuerToIdv isToId = new MsgOfIssuerToIdv(reqStatus, reasonCodeLen, reasonCode);
 		MsgOfIdvReslt idvReslt = idv.getIdvReslt(isToId);
@@ -91,7 +97,8 @@ public class EngineForTokenization extends EngineDecorator{
 		return idvReslt;
 		
 	}
-	private MsgOfTokReslt doToken(String ...param) {
+	
+	private MsgOfTokReslt doToken(String ...param)throws Exception {
 		TokenProc tp = new TokenProc(Integer.parseInt(param[1]), param[2], param[0]);
 		
 		MsgOfTokReslt mr = tp.reqTok(moi.getAssigTokAssuLevel());
@@ -113,10 +120,9 @@ public class EngineForTokenization extends EngineDecorator{
 		jo.put("assigTokAssuLevel", ""+moi.getAssigTokAssuLevel());		
 		jo.put("tokenKey", hexAndString.bytesToHexString(gs.getKeyBytes()) );
 		jo.put("tokenExpDate", mot.getTokenExpDate());
-		
-		System.out.println("gs.getKeyBytes() len:"+gs.getKeyBytes().length);
-		
+
 		System.out.println("token and tokenkey"+jo.toString());
+		
 		return jo.toString();
 		
 	}

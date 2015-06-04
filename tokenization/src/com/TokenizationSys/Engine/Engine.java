@@ -6,7 +6,7 @@ public interface Engine {
 	
 	public String[] SetConnect(String ...param);
 	
-	public String[] getMsg(JSONObject jo);
+	public String[] getMsg(JSONObject jo) throws Exception;
 	
 	public String[] DeInfo(String ...param);
 

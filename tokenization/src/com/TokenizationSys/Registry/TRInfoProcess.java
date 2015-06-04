@@ -9,7 +9,7 @@ import com.TokenizationSys.DB.ResponseCode;
 import com.TokenizationSys.DB.Vault;
 import com.TokenizationSys.Utils.Configuration;
 
-public class TRInfoProcess {
+public class TRInfoProcess  {
 
 	/**TR ID
 	 * 
@@ -23,7 +23,7 @@ public class TRInfoProcess {
 		this.mMsgOfTRRegistry = msg;
 	}
 	
-	public String generateTRID() {
+	public String generateTRID() throws Exception{
 		
 		/*TODO generate TR_ID*/
 		StringBuilder sb = new StringBuilder();
@@ -33,7 +33,10 @@ public class TRInfoProcess {
 		String idString = sb.toString();// TR ID
 		
 		
-		this.mMsgOfTRRegistry.setTRID(idString);		
+		this.mMsgOfTRRegistry.setTRID(idString);	
+		try {
+			
+		
 		int resultcode = registerInVault(this.mMsgOfTRRegistry);
 		
 		while(resultcode == ResponseCode.TR_ALREADY_EXIST){
@@ -48,11 +51,14 @@ public class TRInfoProcess {
 		if (resultcode == ResponseCode.UNKNOWN_ERROR) {
 			return resultcode+"";
 		}
-
+		} catch (Exception e) {
+			// TODO: handle exception
+			throw new Exception("error from generateTRID:"+e.getMessage());
+		}
 		return idString;
 		
 	}
-	public int registerInVault(MsgOfTRRegistry msgOfTRRegistry){
+	public int registerInVault(MsgOfTRRegistry msgOfTRRegistry) throws Exception{
 		
 		JSONObject tr=new JSONObject();
 		
@@ -62,11 +68,18 @@ public class TRInfoProcess {
 		tr.put("posEntryMode", msgOfTRRegistry.getPosEntryMode());
 		tr.put("extra1", msgOfTRRegistry.getParam_1());
 		tr.put("extra2", msgOfTRRegistry.getparam_2());
-		
+		JSONObject pkg = new JSONObject();
+		try {
+			
 		
 		Vault vault=Vault.getVault();
 		//注册
-		JSONObject pkg=vault.registerTr(tr);
+		pkg=vault.registerTr(tr);
+		
+		} catch (Exception e) {
+			System.out.println("TRInfoProcessError:"+e.getMessage());
+			throw new Exception("TRInfoProcessError:"+e.getMessage());
+		}
 		int resCode=pkg.getInt("responseCode");
 		//检测是TR是否存在
 		//int res1=vault.isTrExist(tr);
@@ -74,7 +87,7 @@ public class TRInfoProcess {
 		
 		return resCode;
 	}
-	public String getRandomNumber(){
+	public String getRandomNumber()throws Exception{
 		 /*
 	     * 返回长度为【strLength】的随机数，在前面补0 后面,再后面加上时间。
 	     */

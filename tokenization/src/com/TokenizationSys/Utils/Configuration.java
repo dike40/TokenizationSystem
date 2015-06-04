@@ -21,9 +21,15 @@ public class Configuration {
 			
 		}
 	}
-	
+	public static String errorRequest = "no such servlet request!";
 	public static String msgFromRegistry = "registry";
 	public static String msgFromTokenization = "tokenization";
 	public static String msgFromDeTokenization = "detokenization";
 	public static String msgFromLifeCtrl = "lifeCtrl";
+	
+	public static String lifeTypeUnlink = "unlink";
+	public static String lifeTypeSuspend = "suspend";
+	public static String lifeTypeActivate = "activate";
+	public static String lifeTypeNewTime = "newtime";
+	
 }

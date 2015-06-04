@@ -175,9 +175,7 @@ public class TokenSys {
 		GenerateSharekey gk = GenerateSharekey.getGS();
 		gk.generKey();
 		
-		    //System.out.println("ts.keyBytes£º" + ts.keyBytes);
-		SecureAlgorithm sa = new SecureAlgorithm();
-		tokCrypto = sa.Encrypt(content, gk.getKeyBytes());
+		    tokCrypto = SecureAlgorithm.Encrypt(content, gk.getKeyBytes());
 	
 		    //System.out.println("tokCrypto£º" + tokCrypto);
 		

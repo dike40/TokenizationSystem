@@ -35,5 +35,9 @@ public class TOKEN {
 	public static final int SET_SHARED_KEY=27;
 	public static final int GET_PAN_PAN_EXPIRY=26;
 	
+	public static final int UPDATE_TOKEN_EXPIRY_TIME=28;
+	public static final int UPDATE_TOKEN_STATE=29;
+	public static final int UNLINK_TOKEN=30;
+	public static final int GET_TOKEN_STATUS=31;
 
 }
