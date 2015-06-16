@@ -30,7 +30,7 @@ public class Vault {
 	
 	private Vault(){
 		try{
-			post.setURI(new URI("http://192.168.1.111:8080/Vault/VaultController"));
+			post.setURI(new URI("http://192.168.1.118:8080/Vault/VaultController"));
 		}catch(Exception e){
 			e.printStackTrace();
 		}
