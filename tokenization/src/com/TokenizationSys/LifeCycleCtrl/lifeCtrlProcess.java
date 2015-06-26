@@ -1,6 +1,7 @@
 package com.TokenizationSys.LifeCycleCtrl;
 
 
+import com.TokenizationSys.DB.ResponseCode;
 import com.TokenizationSys.DB.Vault;
 import com.TokenizationSys.Utils.Configuration;
 
@@ -31,14 +32,31 @@ public class lifeCtrlProcess {
 		}
 		else if (mMsgOfLifeCtrl.getTokenManageType().equals(Configuration.lifeTypeSuspend)) {
 			
+			/* suspend 的时候 因为是pan来做索引取得token 所以 报文里token字段代表pan 需要再转化*/
+			
 			JSONObject mappingData = new JSONObject();
-			mappingData.put("token", mMsgOfLifeCtrl.getToken());
-			mappingData.put("trId", mMsgOfLifeCtrl.getTrId());
-			mappingData.put("tokenStatus", "SUSPEND");
+			mappingData.put("pan", mMsgOfLifeCtrl.getToken());
+			mappingData.put("trId", mMsgOfLifeCtrl.getTrId());	
 			
-			JSONObject resultJsonObject = mVault.updateTokenStatus(mappingData);
+			JSONObject returnJsonObject = mVault.getToken(mappingData);
+			int returncode= returnJsonObject.getInt("responseCode"); 
 			
-			jo.put("vaultReturnCode", ""+resultJsonObject.getInt("responseCode"));
+			if (ResponseCode.SUCCESS == returncode) {
+				
+				JSONObject tokenObj = returnJsonObject.getJSONObject("responseContent"); 
+				String token = tokenObj.getString("token");
+			
+				mappingData.put("token", token);
+				mappingData.put("trId", mMsgOfLifeCtrl.getTrId());
+				mappingData.put("tokenStatus", "SUSPEND");
+			
+				JSONObject resultJsonObject = mVault.updateTokenStatus(mappingData);
+			
+				jo.put("vaultReturnCode", ""+resultJsonObject.getInt("responseCode"));
+			}
+			else{
+				jo.put("vaultReturnCode", ""+ResponseCode.TOKEN_STATUS_UPDATE_FAILURE);
+			}
 		}
 		else if (mMsgOfLifeCtrl.getTokenManageType().equals(Configuration.lifeTypeActivate)) {
 			
@@ -63,6 +81,7 @@ public class lifeCtrlProcess {
 			jo.put("vaultReturnCode", ""+resultJsonObject.getInt("responseCode"));
 		
 		}
+		
 		switch (jo.getInt("vaultReturnCode")) {
 		case 42:
 			jo.put("resultDetail", "TOKEN_EXPIRY_UPDATE_SUCCESS");

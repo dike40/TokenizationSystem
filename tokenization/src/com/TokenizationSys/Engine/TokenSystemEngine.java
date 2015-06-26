@@ -24,13 +24,13 @@ public class TokenSystemEngine implements Engine {
 	
 	public String[] SetConnect(String ...param) {
 		// TODO set connection
-		System.out.println("建立连接。。。成功:"+param);
+		//System.out.println("建立连接。。。成功:"+param);
 		return param;
 	}
 	
 	public String[] getMsg(JSONObject jo) throws Exception {
 		// TODO get message
-		System.out.println("获取报文中。。。成功:"+jo.toString());
+		//System.out.println("获取报文中。。。成功:"+jo.toString());
 		String[] param = null ;
 	try {
 		
@@ -112,13 +112,13 @@ public class TokenSystemEngine implements Engine {
 	
 	public String[] DeInfo(String ...param) {
 		// TODO read message
-		System.out.println("解析报文。。。成功:"+param);
+		//System.out.println("解析报文。。。成功:"+param);
 		return param;
 	}
 
 	public String[] sendBackMsg(String ...param) {
 		// TODO return message
-		System.out.println("返回报文。。。成功:"+param[0]);
+		//System.out.println("返回报文。。。成功:"+param[0]);
 		return param;
 	}
 

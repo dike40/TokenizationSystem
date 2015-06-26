@@ -1,4 +1,5 @@
 package com.TokenizationSys.DB;
+
 public class ResponseCode {
 	public static int SUCCESS=0;
 	public static int UNKNOWN_ERROR=3;

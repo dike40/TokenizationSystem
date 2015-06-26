@@ -25,7 +25,12 @@ public class EngineForLifeCycleCtrl extends EngineDecorator{
 			
 			} catch (Exception e) {
 			// TODO: handle exception
-				return e.getMessage();
+				try {
+					throw e;
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 		}
 		JSONObject resultJO = contrlLife(mMsgOfLifeCtrl);
 		

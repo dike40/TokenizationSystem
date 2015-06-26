@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:context="http://www.springframework.org/schema/context"
+     xmlns:aop="http://www.springframework.org/schema/aop"
+     xmlns:tx="http://www.springframework.org/schema/tx"
+     xsi:schemaLocation="http://www.springframework.org/schema/beans
+        	  http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+              http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+              http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+              http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+           
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+        <property name="url" value="jdbc:mysql://192.168.1.118:3306/vault?characterEncoding=utf-8"></property>
+        <property name="username" value="sara"></property>
+        <property name="password" value="sara"></property>
+    </bean>
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>      
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>   
+	<!-- 配置sqlSessionTemplate --> 
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">  
+        <constructor-arg index="0" ref="sessionFactory" />  
+    </bean> 
+
+	<bean id="logDao" class="com.mybatis.dao.ILogDaoImpl">
+        <property name="sqlSessionFactory" ref="sessionFactory"></property>
+    </bean>
+    
+    <bean id="logService" class="com.mybatis.service.LogServiceDaoImpl">
+        <property name="logDao" ref="logDao"></property>
+    </bean>
+    
+	<bean id="trRegisterService" class="com.serviceImpl.TrRegisterServiceImpl"></bean>  
+	<bean id="tokenizationService" class="com.serviceImpl.TokenizationServiceImpl"></bean>
+	<bean id="detokenizationService" class="com.serviceImpl.DetokenizationServiceImpl"></bean> 
+	<bean id="lifeCycleCtrlService" class="com.serviceImpl.LifeCycleCtrlServiceImpl"></bean>   
+	
+	<bean id="TrRegisterAction" class="com.actions.TrRegisterAction" scope="prototype">
+	<!-- 自动注入 用到了spring+struts2整合包 struts2-spring-plugin-2.3.1.2.jar -->
+	</bean>
+	<bean id="TokenizationAction" class="com.actions.TokenizationAction" scope="prototype">
+	</bean>
+	<bean id="DetokenizationAction" class="com.actions.DetokenizationAction" scope="prototype">
+	</bean>
+	<bean id="LifeCycleCtrlAction" class="com.actions.LifeCycleCtrlAction" scope="prototype">
+	</bean>
+
+	<!-- 激活自动代理功能 -->
+	<context:component-scan base-package="com.aop" annotation-config="true"/>
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+</beans>

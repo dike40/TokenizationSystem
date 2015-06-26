@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper
+	  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		  
+ <mapper namespace="com.mybatis.model.Log">
+ 	<insert id="addLog" parameterType="com.mybatis.model.Log">
+ 		insert into systemlog(logbegintime,logendtime,content) value(#{logbegintime},#{logendtime},#{content})
+ 	</insert>
+ 	
+ 	<delete id="deleteLog" parameterType="com.mybatis.model.Log">
+ 		delete from systemlog where id = #{id}
+ 	</delete>
+ 	
+ 	<update id="updateLog" parameterType="com.mybatis.model.Log">
+ 		update systemlog set logbegintime = #{logbegintime},logendtime = #{logendtime},content = #{content} where id = #{id}
+ 	</update>
+ 	
+ 	<select id="listAll" resultType="com.mybatis.model.Log">
+        select * from systemlog
+    </select>
+ </mapper>

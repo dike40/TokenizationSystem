@@ -14,16 +14,17 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+
 import net.sf.json.JSONObject;
 /**
  * Vault
  *@author YAO SHUI HE
  */
-@SuppressWarnings("deprecation")
-
 public class Vault {
 	private static Vault vault=null;
 	
+	@SuppressWarnings("deprecation")
 	private HttpClient client=new DefaultHttpClient();
 	private HttpPost post=new HttpPost();
 
@@ -41,6 +42,29 @@ public class Vault {
 			vault=new Vault();
 		}
 		return vault;
+	}
+	/**
+	 *以pan，trId为索引，获取token
+	 *@param mappingData,包含pan,trId
+	 *@return 返回码：
+	 *<br>UNKNOW_ERROR: 获取出错
+	 *<br>SUCCESS:获取成功
+	 *<br>返回值： 
+	 *<br>返回值为JSON对象，包含了token的值
+	 *<br>JSONObject res=vault.getTokenStatus(mappingData);
+	 *<br>int code=res.getInt("responseCode");
+	 *<br>JSONObject tokenObj=res.getJSONObject("responseContent");
+	 *<br>String token=stokenObj.getString("token");
+	 */
+	public JSONObject getToken(JSONObject mappingData){
+		JSONObject pkg=null;
+		String data=mappingData.toString();
+		String res=executeCmd(TOKEN.GET_TOKEN_BY_PAN_TRID,data);
+
+		if(res!=null){
+			pkg=JSONObject.fromObject(res);
+		}
+		return pkg;
 	}
 	/**
 	 *以token,trId为索引。获取token的状态
@@ -518,7 +542,6 @@ public class Vault {
 	 *<br>返回值:
 	 *<br>null
 	 */
-	@SuppressWarnings("unused")
 	private JSONObject checkCardholderInfo(JSONObject cardholderData){
 		JSONObject pkg=null;
 		String data=cardholderData.toString();
